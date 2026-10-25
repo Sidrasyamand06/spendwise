@@ -14,6 +14,7 @@ class SpendWiseApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF760A3A)),
+        useMaterial3: true,
       ),
       home: const WelcomeScreen(),
     );
@@ -34,55 +35,42 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void _addSampleExpense() {
     setState(() {
       _expenseCount++;
-      _total += 2.50;
-    });
-  }
-
-  void _reset() {
-    setState(() {
-      _expenseCount = 0;
-      _total = 0;
+      _total += 12.50;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final text = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SpendWise'),
-        actions: [
-          IconButton(
-            onPressed: _reset,
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Reset',
-          ),
-        ],
+        title: const Text('SpendWise Dashboard'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Center(child: _buildSummary(scheme, text)),
-      floatingActionButton: _buildFab(),
-    );
-  }
-
-  Widget _buildSummary(ColorScheme scheme, TextTheme text) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.account_balance_wallet, size: 96, color: scheme.primary),
-        const SizedBox(height: 16),
-        Text('Welcome to SpendWise', style: text.headlineSmall),
-        const SizedBox(height: 8),
-        Text('$_expenseCount expenses · ${_total.toStringAsFixed(2)} USD'),
-      ],
-    );
-  }
-
-  Widget _buildFab() {
-    return FloatingActionButton.extended(
-      onPressed: _addSampleExpense,
-      icon: const Icon(Icons.add),
-      label: const Text('Add coffee'),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Total Expenses: $_expenseCount',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Amount Spent: \$_${_total.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: _addSampleExpense,
+                icon: const Icon(Icons.add),
+                label: const Text('Add Sample Expense'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
